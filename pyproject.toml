@@ -4,9 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "todolist_angrypig555"
-version = "0.2.1"
+version = "0.2.2"
 authors = [
   { name="angrypig555" },
+]
+dependencies = [
+    "textual",
+    "tkinter"
 ]
 description = "A todolist made with the textual library with the ability to open and save your todo-list"
 readme = "README.md"
