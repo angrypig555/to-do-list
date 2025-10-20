@@ -8,3 +8,16 @@ App {
 #remove_button {
     background: red;
 }
+
+#export_button {
+    background: orange;
+}
+
+#import_button {
+    background: grey;
+}
+
+Horizontal {
+    padding: 1;
+}
+
