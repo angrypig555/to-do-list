@@ -1,3 +1,10 @@
-application {
+App {
     border: darkblue;
+}
+
+#add_button {
+    background: green;
+}
+#remove_button {
+    background: red;
 }
