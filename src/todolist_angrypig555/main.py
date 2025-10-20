@@ -12,10 +12,10 @@ todo_list = []
 
 def clean_text(text: str) -> str:
     """Remove any markup tags from the text."""
-    return re.sub(r"\[.*?\]", "", text)
+    text = re.sub(r"\[.*?\]", "", text)
+    text = text.replace("✅", "")
+    return text.strip()
 
-def clean_checkmark(text: str) -> str:
-    return text.replace("✅ ", "")
 
 
 # class Clock(Static):
@@ -94,7 +94,7 @@ class application(App):
             input_widget = self.query_one("#todo_input", Input)
             item_to_remove = input_widget.value.strip()
             for item in todo_list:
-                if clean_text(item) or clean_checkmark(item) == item_to_remove:
+                if clean_text(item) == item_to_remove:
                     item_to_remove = item
                     break
             if item_to_remove in todo_list:
