@@ -2,13 +2,23 @@ from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Static, Button, Input
 from textual.containers import Horizontal, Vertical
 from tkinter import filedialog
+import importlib.resources as pkg_resources
+import todolist_angrypig555
 
 todo_list = []
 
 
 class application(App):
+
+    def __init__(self, **kwargs):
+        # Load CSS file from package resources
+        css_file = pkg_resources.files(todolist_angrypig555).joinpath("main.tcss")
+        self.CSS_PATH = str(css_file)  # convert Path object to string
+        super().__init__(**kwargs)
+        print("CSS import succesful")
+
     BINDINGS = [("q", "quit", "Quit the app")]
-    CSS_PATH = "main.tcss"
+    
     TITLE = "To-Do List"
 
     def compose(self) -> ComposeResult:
