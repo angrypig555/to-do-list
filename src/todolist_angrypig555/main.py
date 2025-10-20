@@ -11,11 +11,11 @@ todo_list = []
 class application(App):
 
     def __init__(self, **kwargs):
-        # Load CSS file from package resources
-        css_file = pkg_resources.files(todolist_angrypig555).joinpath("main.tcss")
-        self.CSS_PATH = str(css_file)  # convert Path object to string
         super().__init__(**kwargs)
-        print("CSS import succesful")
+        # Load CSS content from package resource
+        with pkg_resources.open_text(todolist_angrypig555, "main.tcss") as f:
+            css_content = f.read()
+        self.stylesheet.add_source(css_content)  # load CSS directly from str
 
     BINDINGS = [("q", "quit", "Quit the app")]
     
