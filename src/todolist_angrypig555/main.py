@@ -1,12 +1,34 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Static, Button, Input
 from textual.containers import Horizontal, Vertical
+# from textual.reactive import reactive - for clock widget
 from tkinter import filedialog
 import importlib.resources as pkg_resources
 import todolist_angrypig555
+# import datetime
+import re
 
 todo_list = []
 
+def clean_text(text: str) -> str:
+    """Remove any markup tags from the text."""
+    return re.sub(r"\[.*?\]", "", text)
+
+def clean_checkmark(text: str) -> str:
+    return text.replace("✅ ", "")
+
+
+# class Clock(Static):
+#    time: reactive[str] = reactive("")
+#    def on_mount(self):
+#        self.set_interval(1, self.update_time)
+#        self.styles.dock = "bottom"
+#        self.styles.align = ("right", "bottom")
+#        self.styles.padding = (0, 2)
+#    def update_time(self):
+#        self.time = datetime.datetime.now().strftime("%H:%M:%S")
+#        self.update(self.time)
+# todo: create a clock widget that doesnt make the whole app mushed
 
 class application(App):
 
@@ -27,13 +49,14 @@ class application(App):
         yield Input(placeholder="New to-do item...", id="todo_input")
         yield Horizontal(
             Button("Add Item", id="add_button"),
-            Button("Remove Item", id="remove_button"),
+            Button("Check off item", id="check_button"),
             Button("Export", id="export_button"),
-            Button("Import", id="import_button")
+            Button("Import", id="import_button"),
+            Button("Remove Item", id="remove_button")
         )
         yield Static("Your To-Do List:", id="list_label")
         yield Static("", id="todo_list")
-        yield Static("To-Do List V0.2, press Q to exit.", id="footer")
+        yield Static("To-Do List v0.2.", id="custom_footer")
         yield Footer()
 
     def update_todo_list(self) -> None:
@@ -70,6 +93,10 @@ class application(App):
         elif event.button.id == "remove_button":
             input_widget = self.query_one("#todo_input", Input)
             item_to_remove = input_widget.value.strip()
+            for item in todo_list:
+                if clean_text(item) or clean_checkmark(item) == item_to_remove:
+                    item_to_remove = item
+                    break
             if item_to_remove in todo_list:
                 todo_list.remove(item_to_remove)
                 input_widget.value = ""
@@ -78,6 +105,14 @@ class application(App):
             self.export_todo_list()
         elif event.button.id == "import_button":
             self.import_todo_list()
+        elif event.button.id == "check_button":
+            input_widget = self.query_one("#todo_input", Input)
+            item_to_check = input_widget.value.strip()
+            if item_to_check in todo_list:
+                index = todo_list.index(item_to_check)
+                todo_list[index] = f"[strike]{item_to_check}[/strike]✅"
+                input_widget.value = ""
+                self.update_todo_list()
 if __name__ == "__main__":
     app = application()
     app.run()

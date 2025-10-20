@@ -17,6 +17,16 @@ App {
     background: grey;
 }
 
+#check_button {
+    background: blue;
+}
+
+#clock {
+    dock: bottom;
+    align: right bottom;
+    padding: 0 2;
+}
+
 Horizontal {
     padding: 1;
 }
