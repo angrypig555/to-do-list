@@ -23,7 +23,7 @@ class application(App):
         )
         yield Static("Your To-Do List:", id="list_label")
         yield Static("", id="todo_list")
-        yield Static("To-Do List V0.1, press Q to exit.", id="footer")
+        yield Static("To-Do List V0.2, press Q to exit.", id="footer")
         yield Footer()
 
     def update_todo_list(self) -> None:

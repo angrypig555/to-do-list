@@ -1,7 +1,7 @@
 Metadata-Version: 2.4
-Name: todolist-angrypig555
-Version: 0.1
-Summary: A todolist in textual
+Name: todolist_angrypig555
+Version: 0.2
+Summary: A todolist made with the textual library with the ability to open and save your todo-list
 Author: angrypig555
 License-Expression: MIT
 Project-URL: Homepage, https://github.com/angrypig555/to-do-list
@@ -16,6 +16,5 @@ Dynamic: license-file
 # to-do-list
 A to do list in textual
 
-Currently it is not reccomended to use the package as it is unfinished ant its always being improved.
 Required dependencies: textual, rich, python3
 Runs on any OS, tested on ubuntu.
