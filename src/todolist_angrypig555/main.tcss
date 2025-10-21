@@ -21,10 +21,9 @@ App {
     background: blue;
 }
 
-#clock {
-    dock: bottom;
-    align: right bottom;
-    padding: 0 2;
+
+#todo_list {
+    border: white;
 }
 
 Horizontal {
