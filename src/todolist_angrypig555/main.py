@@ -1,6 +1,7 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Static, Button, Input
 from textual.containers import Horizontal, Vertical
+from textual.binding import Binding
 # from textual.reactive import reactive - for clock widget
 from tkinter import filedialog
 import importlib.resources as pkg_resources
@@ -34,14 +35,19 @@ class application(App):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Load CSS content from package resource
+        # Load TCSS content from package resource
         with pkg_resources.open_text(todolist_angrypig555, "main.tcss") as f:
             css_content = f.read()
         self.stylesheet.add_source(css_content)  # load CSS directly from str
+        self.buttons_hidden = False
 
-    BINDINGS = [("q", "quit", "Quit the app")]
+    BINDINGS = [
+        Binding("q", "quit", "Quit the app"),
+        Binding("h", "toggle_buttons()", "Hide/Show buttons")]
     
     TITLE = "To-Do List"
+
+
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -52,10 +58,11 @@ class application(App):
             Button("Check off item", id="check_button"),
             Button("Export", id="export_button"),
             Button("Import", id="import_button"),
-            Button("Remove Item", id="remove_button")
+            Button("Remove Item", id="remove_button"),
+            id="button_row"
         )
         yield Static("Your To-Do List:", id="list_label")
-        yield Static("", id="todo_list")
+        yield Static("No items in the to-do list.", id="todo_list")
         yield Static("To-Do List v0.2.", id="custom_footer")
         yield Footer()
 
@@ -113,6 +120,30 @@ class application(App):
                 todo_list[index] = f"[strike]{item_to_check}[/strike]✅"
                 input_widget.value = ""
                 self.update_todo_list()
+        
+
+
+
+    def action_toggle_buttons(self) -> None:
+        print("Toggling button visibility")
+        button_row =self.query_one("#button_row", Horizontal)
+        self.buttons_hidden = not self.buttons_hidden
+        button_row.visible = not self.buttons_hidden
+        todo_input = self.query_one("#todo_input", Input)
+        label = self.query_one("#label", Static)
+        if self.buttons_hidden:
+            label.display = False
+            todo_input.display = False
+            button_row.display = False  # Hides and removes from layout
+            self.notify("Buttons hidden", severity="warning")
+        else:
+            label.display = True
+            todo_input.display = True
+            button_row.display = True   # Shows again
+            self.notify("Buttons shown", severity="information")
+
+        self.refresh()
+            
 if __name__ == "__main__":
     app = application()
     app.run()

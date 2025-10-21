@@ -14,7 +14,7 @@ App {
 }
 
 #list_label {
-    font-size:20;
+    text-style: bold;
 }
 
 #import_button {
