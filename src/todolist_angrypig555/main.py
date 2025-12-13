@@ -50,7 +50,7 @@ class application(App):
     TITLE = "To-Do List"
 
 
-
+    # defines the widgets
     def compose(self) -> ComposeResult:
         yield Header()
         yield Static("Enter a new to-do item:", id="label")
@@ -69,6 +69,8 @@ class application(App):
         yield Static("To-Do List v1.2.", id="custom_footer")
         yield Footer()
 
+
+    # this updates the progress bar
     def update_progress(self) -> None:
         progress_widget = self.query_one("#progress", Static)
 
@@ -86,6 +88,7 @@ class application(App):
         progress_widget.update(
             f"[{bar}] {completed}/{total} ({percent}%)"
         )
+    # this updates the todo list
     def update_todo_list(self) -> None:
         todo_list_widget = self.query_one("#todo_list", Static)
         if todo_list:
@@ -94,6 +97,7 @@ class application(App):
             todo_list_widget.update("Yay, no items in the to-do list!")
         self.update_progress()
 
+    #this exports the todo list into a txt file
     def export_todo_list(self) -> None:
         file_path = filedialog.asksaveasfilename(defaultextension=".txt",
                                                  filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
@@ -101,6 +105,7 @@ class application(App):
             with open(file_path, "w", encoding="utf-8") as file:
                 for item in todo_list:
                     file.write(f"{item}\n")
+    # this imports the todo list from a txt file
     def import_todo_list(self) -> None:
         file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
         if file_path:
@@ -110,6 +115,7 @@ class application(App):
                     if item and item not in todo_list:
                         todo_list.append(item)
             self.update_todo_list()
+    # this handles all of the buttons in the code
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "add_button":
             input_widget = self.query_one("#todo_input", Input)
@@ -144,7 +150,7 @@ class application(App):
         
 
 
-
+    # this handles the visibility of the buttons and input fields
     def action_toggle_buttons(self) -> None:
         print("Toggling button visibility")
         button_row =self.query_one("#button_row", Horizontal)
