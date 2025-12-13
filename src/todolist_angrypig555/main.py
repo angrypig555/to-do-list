@@ -1,3 +1,5 @@
+# todo: write documentation
+
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Static, Button, Input
 from textual.containers import Horizontal, Vertical
@@ -62,16 +64,35 @@ class application(App):
             id="button_row"
         )
         yield Static("Your To-Do List:", id="list_label")
+        yield Static("", id="progress")
         yield Static("No items in the to-do list.", id="todo_list")
-        yield Static("To-Do List v1.0.", id="custom_footer")
+        yield Static("To-Do List v1.2.", id="custom_footer")
         yield Footer()
 
+    def update_progress(self) -> None:
+        progress_widget = self.query_one("#progress", Static)
+
+        total = len(todo_list)
+        completed = sum("✅" in item for item in todo_list)
+
+        if total == 0:
+            progress_widget.update("")
+            return
+
+        percent = int((completed / total) * 100)
+        filled = int((completed / total) * 20)
+        bar = "█" * filled + "░" * (20 - filled)
+
+        progress_widget.update(
+            f"[{bar}] {completed}/{total} ({percent}%)"
+        )
     def update_todo_list(self) -> None:
         todo_list_widget = self.query_one("#todo_list", Static)
         if todo_list:
             todo_list_widget.update("\n".join(f"- {item}" for item in todo_list))
         else:
-            todo_list_widget.update("No items in the to-do list.")
+            todo_list_widget.update("Yay, no items in the to-do list!")
+        self.update_progress()
 
     def export_todo_list(self) -> None:
         file_path = filedialog.asksaveasfilename(defaultextension=".txt",
