@@ -1,3 +1,5 @@
+# todo: write documentation
+
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Static, Button, Input
 from textual.containers import Horizontal, Vertical
@@ -48,7 +50,7 @@ class application(App):
     TITLE = "To-Do List"
 
 
-
+    # defines the widgets
     def compose(self) -> ComposeResult:
         yield Header()
         yield Static("Enter a new to-do item:", id="label")
@@ -62,17 +64,40 @@ class application(App):
             id="button_row"
         )
         yield Static("Your To-Do List:", id="list_label")
+        yield Static("", id="progress")
         yield Static("No items in the to-do list.", id="todo_list")
-        yield Static("To-Do List v1.0.", id="custom_footer")
+        yield Static("To-Do List v1.1.", id="custom_footer")
         yield Footer()
 
+
+    # this updates the progress bar
+    def update_progress(self) -> None:
+        progress_widget = self.query_one("#progress", Static)
+
+        total = len(todo_list)
+        completed = sum("✅" in item for item in todo_list)
+
+        if total == 0:
+            progress_widget.update("")
+            return
+
+        percent = int((completed / total) * 100)
+        filled = int((completed / total) * 20)
+        bar = "█" * filled + "░" * (20 - filled)
+
+        progress_widget.update(
+            f"[{bar}] {completed}/{total} ({percent}%)"
+        )
+    # this updates the todo list
     def update_todo_list(self) -> None:
         todo_list_widget = self.query_one("#todo_list", Static)
         if todo_list:
             todo_list_widget.update("\n".join(f"- {item}" for item in todo_list))
         else:
-            todo_list_widget.update("No items in the to-do list.")
+            todo_list_widget.update("Yay, no items in the to-do list!")
+        self.update_progress()
 
+    #this exports the todo list into a txt file
     def export_todo_list(self) -> None:
         file_path = filedialog.asksaveasfilename(defaultextension=".txt",
                                                  filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
@@ -80,6 +105,7 @@ class application(App):
             with open(file_path, "w", encoding="utf-8") as file:
                 for item in todo_list:
                     file.write(f"{item}\n")
+    # this imports the todo list from a txt file
     def import_todo_list(self) -> None:
         file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
         if file_path:
@@ -89,6 +115,7 @@ class application(App):
                     if item and item not in todo_list:
                         todo_list.append(item)
             self.update_todo_list()
+    # this handles all of the buttons in the code
     def on_button_pressed(self, event: Button.Pressed) -> None:
         if event.button.id == "add_button":
             input_widget = self.query_one("#todo_input", Input)
@@ -123,7 +150,7 @@ class application(App):
         
 
 
-
+    # this handles the visibility of the buttons and input fields
     def action_toggle_buttons(self) -> None:
         print("Toggling button visibility")
         button_row =self.query_one("#button_row", Horizontal)
