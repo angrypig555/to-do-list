@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: todolist_angrypig555
-Version: 1.0.1
+Version: 1.1.0
 Summary: A todolist made with the textual library with the ability to open and save your todo-list
 Author: angrypig555
 License-Expression: MIT
@@ -18,9 +18,9 @@ Dynamic: license-file
 A to do list in textual
 
 Required dependencies: textual, rich, python3
-Runs on any OS, tested on ubuntu.
+Runs on any OS, tested on ubuntu and windows 11.
 
 # Changelog
-v1.0.0
--Added the ability to hide buttons
--Stable release
+v1.1.0
+- Added progress bar
+- Stable release

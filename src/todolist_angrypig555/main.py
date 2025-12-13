@@ -66,7 +66,7 @@ class application(App):
         yield Static("Your To-Do List:", id="list_label")
         yield Static("", id="progress")
         yield Static("No items in the to-do list.", id="todo_list")
-        yield Static("To-Do List v1.2.", id="custom_footer")
+        yield Static("To-Do List v1.1.", id="custom_footer")
         yield Footer()
 
 

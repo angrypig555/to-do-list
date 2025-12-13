@@ -2,9 +2,9 @@
 A to do list in textual
 
 Required dependencies: textual, rich, python3
-Runs on any OS, tested on ubuntu.
+Runs on any OS, tested on ubuntu and windows 11.
 
 # Changelog
-v1.0.0
--Added the ability to hide buttons
--Stable release
+v1.1.0
+- Added progress bar
+- Stable release
