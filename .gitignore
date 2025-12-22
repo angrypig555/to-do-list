@@ -2,3 +2,5 @@
 testing.py
 *.txt
 __pycache__/
+venv.sh
+dist/
