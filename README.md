@@ -5,8 +5,9 @@ Required dependencies: textual, rich, python3
 Runs on any OS, tested on ubuntu and windows 11.
 
 # Changelog
-v1.1.0
-- Added progress bar
+v1.1.1
+- Added credits for a new contributor 
+- Added a christmas message at the bottom of the application
 - Stable release
 
 # Contributors
